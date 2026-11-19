@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="style.css"><title>Casabemol | Instrumentos Musicais</title></head>
+<body>
+<nav class="navbar">
+ <div class="navbar-brand">🎵 <b>casabemol</b></div>
+ <span id="statusServidor" class="status-servidor" title="Verificando conexão com a API...">● verificando</span>
+ <div class="navbar-links">
+  <button class="nav-btn active" data-secao="produtos">Instrumentos</button>
+  <button class="nav-btn" data-secao="carrinho">Carrinho <span id="carrinhoContador" class="badge">0</span></button>
+  <button class="nav-btn" data-secao="compras">Minhas compras</button>
+  <button class="nav-btn" data-secao="login" id="btnLoginNav">Login</button>
+  <button class="nav-btn" data-secao="cadastro">Cadastro</button>
+ </div>
+ <div class="navbar-user" id="navbarUser" style="display:none;"><div class="menu-usuario" id="menuUsuario">
+    <button type="button" class="menu-usuario-btn" id="btnMenuUsuario" aria-haspopup="true" aria-expanded="false" aria-controls="menuUsuarioLista">
+     <span id="usuarioNome"></span>
+     <svg class="menu-usuario-seta" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="menu-usuario-lista" id="menuUsuarioLista" hidden>
+     <button type="button" class="menu-usuario-item" id="btnPerfilMenu" data-secao="perfil">Meu perfil</button>
+     <button type="button" class="menu-usuario-item" id="btnComprasMenu" data-secao="compras">Minhas compras</button>
+     <button type="button" class="menu-usuario-item sair" id="btnLogout">Sair</button>
+    </div>
+   </div></div>
+</nav>
+<main>
+<section id="secao-produtos" class="secao">
+ <h1>Instrumentos Musicais</h1>
+ <p class="slogan-loja">Do primeiro acorde ao último show: encontre o instrumento certo para o seu som.</p>
+ <form id="formFiltros" class="filtros-produtos">
+  <div class="campo filtro-busca"><label for="buscaProduto">Buscar por nome</label><input type="search" id="buscaProduto" placeholder="Ex.: violão, teclado, bateria..."></div>
+  <div class="campo"><label for="filtroCategoria">Categoria</label><select id="filtroCategoria"><option value="">Todas as categorias</option></select></div>
+  <div class="campo"><label for="filtroPrecoMin">Preço mínimo</label><input type="number" id="filtroPrecoMin" min="0" step="0.01" placeholder="R$ 200,00"></div>
+  <div class="campo"><label for="filtroPrecoMax">Preço máximo</label><input type="number" id="filtroPrecoMax" min="0" step="0.01" placeholder="R$ 700,00"></div>
+  <div class="campo"><label for="filtroOrdem">Ordenar por preço</label><select id="filtroOrdem"><option value="">Padrão</option><option value="menor">Menor preço</option><option value="maior">Maior preço</option></select></div>
+  <div class="filtros-acoes"><button type="button" id="btnLimparFiltros" class="btn-limpar">Limpar filtros</button><button type="submit" class="submit-btn btn-pesquisar">Pesquisar</button></div>
+ </form>
+ <div id="produtosErro" class="error-message"></div>
+ <div id="produtosResumo" class="produtos-resumo"></div>
+ <div id="listaProdutos" class="grid-produtos"></div>
+ <nav id="paginacao" class="paginacao" aria-label="Paginação de produtos" hidden></nav>
+</section>
+<section id="secao-carrinho" class="secao" hidden>
+ <h1>Seu carrinho</h1>
+ <p class="slogan-loja">Confira os instrumentos escolhidos e finalize sua compra.</p>
+ <div id="carrinhoVazio" class="carrinho-vazio" hidden>
+  <div class="carrinho-vazio-icone" aria-hidden="true">🎵</div>
+  <h2>Seu carrinho está vazio</h2>
+  <p>Que tal escolher um instrumento novo?</p>
+  <button type="button" class="submit-btn" data-secao="produtos">Ver instrumentos</button>
+ </div>
+ <div id="carrinhoLayout" class="carrinho-layout" hidden>
+  <div id="listaCarrinho" class="carrinho-itens"></div>
+  <aside class="carrinho-resumo">
+   <h2>Resumo do pedido</h2>
+   <div class="resumo-linha"><span>Quantidade de itens</span><strong id="resumoQtd">0</strong></div>
+   <div class="resumo-linha"><span>Subtotal</span><strong id="resumoSubtotal">R$ 0,00</strong></div>
+   <div class="resumo-linha"><span>Entrega</span><strong class="resumo-gratis">A combinar</strong></div>
+   <div id="carrinhoPagamento" class="carrinho-pagamento"><label for="formaPagamento">Forma de pagamento</label><select id="formaPagamento"><option value="">Selecione...</option><option value="Pix">Pix</option><option value="Cartão de crédito">Cartão de crédito</option><option value="Cartão de débito">Cartão de débito</option><option value="Boleto">Boleto</option><option value="Dinheiro">Dinheiro</option></select></div>
+   <span id="carrinhoErro" class="error-message"></span>
+   <div class="resumo-total"><span>Total</span><strong id="carrinhoTotal"></strong></div>
+   <button id="btnFinalizar" class="submit-btn" hidden>Finalizar compra</button>
+   <p class="resumo-aviso">Compra registrada no sistema da loja</p>
+  </aside>
+ </div>
+</section>
+<section id="secao-login" class="secao estreita" hidden><h1>Entrar</h1><form id="formLogin"><div class="campo"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" required></div><div class="campo"><label for="loginSenha">Senha</label><input type="password" id="loginSenha" required></div><span id="loginErro" class="error-message"></span><button type="submit" class="submit-btn">Entrar</button></form><p class="link-secundario">Sem conta? <a href="#" data-secao="cadastro">Cadastre-se</a></p></section>
+<section id="secao-cadastro" class="secao" hidden><h1>Criar conta</h1><form id="formCadastro"><fieldset><legend>01 / Dados pessoais</legend><div class="grid2"><div class="campo full"><label for="nome">Nome</label><input type="text" id="nome" required></div><div class="campo"><label for="cpf">CPF</label><input type="text" id="cpf" placeholder="000.000.000-00" required></div><div class="campo"><label for="email">E-mail</label><input type="email" id="email" required></div><div class="campo"><label for="celular">Celular</label><input type="tel" id="celular" placeholder="(99) 99999-9999" required></div><div class="campo"><label for="senha">Senha</label><input type="password" id="senha" required></div></div></fieldset><fieldset><legend>02 / Endereço</legend><div class="grid2"><div class="campo"><label for="cep">CEP</label><input type="text" id="cep" placeholder="00000-000" required oninput="pesquisar(this.value)"><span id="cepErro" class="error-message"></span></div><div class="campo"><label for="rua">Rua</label><input type="text" id="rua" required></div><div class="campo"><label for="numero_casa">Número da casa</label><input type="text" id="numero_casa" required></div><div class="campo"><label for="bairro">Bairro</label><input type="text" id="bairro" required></div><div class="campo"><label for="cidade">Cidade</label><input type="text" id="cidade" required></div><div class="campo"><label for="estado">Estado</label><input type="text" id="estado" required></div><div class="campo"><label for="dt_nasc">Data de nascimento</label><input type="date" id="dt_nasc" required></div></div></fieldset><span id="cadastroErro" class="error-message"></span><button type="submit" class="submit-btn">Enviar cadastro</button></form></section>
+<section id="secao-perfil" class="secao" hidden><h1>Meu perfil</h1>
+ <div class="perfil-cabecalho">
+  <div class="perfil-avatar" id="perfilAvatar" aria-hidden="true">?</div>
+  <div class="perfil-identificacao"><p class="perfil-nome" id="perfilNomeExibicao">Seu perfil</p><p class="perfil-email" id="perfilEmailExibicao"></p></div>
+ </div>
+ <form id="formPerfil" novalidate>
+  <div class="perfil-grid">
+   <div class="campo"><label for="perfilNome">Nome</label><input type="text" id="perfilNome" maxlength="50" autocomplete="name" required></div>
+   <div class="campo"><label for="perfilEmail">E-mail</label><input type="email" id="perfilEmail" maxlength="50" autocomplete="email" required></div>
+   <div class="campo"><label for="perfilCpf">CPF</label><input type="text" id="perfilCpf" maxlength="14" inputmode="numeric" autocomplete="off" required></div>
+   <div class="campo"><label for="perfilCelular">Celular</label><input type="tel" id="perfilCelular" maxlength="14" inputmode="tel" autocomplete="tel" required></div>
+  </div>
+  <div class="perfil-divisor"></div>
+  <h2 class="perfil-subtitulo">Alterar senha</h2>
+  <p class="perfil-dica">Preencha os campos abaixo apenas se quiser trocar sua senha.</p>
+  <div class="perfil-grid">
+   <div class="campo"><label for="perfilSenhaAtual">Senha atual</label><input type="password" id="perfilSenhaAtual" autocomplete="current-password"></div>
+   <div class="campo"><label for="perfilNovaSenha">Nova senha</label><input type="password" id="perfilNovaSenha" minlength="6" autocomplete="new-password"></div>
+   <div class="campo"><label for="perfilConfirmarSenha">Confirmar nova senha</label><input type="password" id="perfilConfirmarSenha" minlength="6" autocomplete="new-password"></div>
+  </div>
+  <span id="perfilErro" class="error-message"></span>
+  <div class="perfil-acoes"><button type="submit" class="submit-btn" id="btnSalvarPerfil">Salvar alterações</button><button type="button" class="btn-limpar" id="btnCancelarPerfil">Descartar alterações</button></div>
+ </form>
+</section>
+<section id="secao-compras" class="secao">
+ <h1>Minhas compras</h1>
+ <p class="slogan-loja">Aqui ficam todos os seus pedidos finalizados na loja.</p>
+ <div id="comprasErro" class="error-message"></div>
+ <div id="comprasVazio" class="carrinho-vazio" hidden>
+  <div class="carrinho-vazio-icone" aria-hidden="true">🧾</div>
+  <h2>Você ainda não fez nenhuma compra</h2>
+  <p>Quando finalizar um pedido, ele aparecerá aqui com todos os detalhes.</p>
+  <button type="button" class="submit-btn" data-secao="produtos">Ver instrumentos</button>
+ </div>
+ <div id="listaCompras" class="historico-lista"></div>
+</section>
+</main>
+<footer class="rodape"><b>casabemol</b> · violões, teclados, baterias, sopro e acessórios · Seu som começa aqui 🎵</footer>
+<div id="notificacoes" class="notificacoes" aria-live="polite" aria-atomic="false"></div>
+<script src="script.js"></script>
+</body></html>

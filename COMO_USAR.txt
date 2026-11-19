@@ -1,0 +1,48 @@
+COMO RODAR O PROJETO - LOJA DE INSTRUMENTOS MUSICAIS
+====================================================
+
+O Node.js ja esta instalado. No terminal, entre nesta pasta e rode:
+
+   npm install
+   node index.js
+
+Depois abra o navegador em: http://localhost:3000
+
+Se quiser recriar as tabelas no MySQL antes de iniciar, use "npm start"
+(executa a migration e depois a API). O catalogo vem de front\produtos.json.
+
+IMPORTANTE
+----------
+- Use "node index.js" para iniciar sem apagar os dados.
+- "npm start" executa a migration e cria as tabelas que estiverem faltando.
+- Se a porta 3000 estiver em uso, feche o outro servidor antes.
+- Copie "env.txt" para ".env" e ajuste os dados do seu MySQL antes de rodar
+  a migration. A API em si funciona com os arquivos JSON desta pasta.
+
+IMAGENS DOS INSTRUMENTOS
+------------------------
+As fotos ficam em img\instrumentos\. Cada produto de front\produtos.json
+aponta para uma dessas fotos pelo campo "caminho_img".
+As fontes das imagens estao em CREDITOS_IMAGENS.md e em
+img\instrumentos\_creditos_novos.txt.
+
+CONTA E PERFIL
+--------------
+- Cadastre-se em "Cadastro" e entre em "Login".
+- Depois de entrar, clique no seu nome no topo da pagina para abrir o menu:
+  "Meu perfil" permite alterar nome, e-mail, CPF, celular e senha.
+- O menu tambem tem atalhos para "Minhas compras" e "Sair".
+
+CARRINHO E COMPRA
+-----------------
+- Escolha os instrumentos e clique em "Adicionar ao carrinho".
+- No carrinho, selecione a forma de pagamento.
+- Clique em "Finalizar compra" (e preciso estar logado).
+- O estoque de cada instrumento e baixado automaticamente e o pedido fica
+  registrado em compras.json.
+
+HISTORICO DE COMPRAS
+--------------------
+- Clique em "Minhas compras" na barra superior ou no menu do usuario.
+- A tela mostra todos os pedidos que voce ja finalizou, com data, forma de
+  pagamento, itens, fotos e total de cada compra.
