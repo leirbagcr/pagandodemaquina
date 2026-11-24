@@ -7,7 +7,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "node migration.js && node index.js",
+    "start": "node index.js",
+    "migrate": "node migration.js",
+    "migrate:clientes": "node migration_clientes.js",
+    "gerar:sql": "node scripts/gerar_banco_sql.js",
+    "verificar": "node scripts/verificar_catalogo.js",
+    "sincronizar:compras": "node scripts/sincronizar_compras.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

@@ -1,13 +1,14 @@
 // npm init
 // npm install express cors bcrypt jsonwebtoken dotenv
 
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { garantirCliente, salvarCompra } = require("./db");
 
 const app = express();
 const port = Number(process.env.API_PORT) || 3000;
@@ -23,6 +24,17 @@ const PRODUTOS_POR_PAGINA = 10;
 app.use(cors());
 app.use(express.json());
 app.use("/img", express.static(path.join(__dirname, "img")));
+
+// A pasta front é pública, mas estes arquivos são internos: bd.json contém
+// cadastros/senhas e index.js é uma versão antiga da API.
+app.use((req, res, next) => {
+    const internos = new Set(["/bd.json", "/index.js", "/produtos.json"]);
+    if (internos.has(req.path.toLowerCase())) {
+        return res.status(404).json({ erro: "Arquivo não encontrado" });
+    }
+    return next();
+});
+
 // serve o front-end (pasta front) em http://localhost:3000
 app.use(express.static(path.join(__dirname, "front")));
 
@@ -498,7 +510,7 @@ app.get('/produto/:id', (req, res) => {
 });
 
 // ---------- COMPRA ----------
-app.post('/compra', autenticar, (req, res) => {
+app.post('/compra', autenticar, async (req, res) => {
     const { forma_pagamento, produtos: itens } = req.body || {};
 
     if (!forma_pagamento) {
@@ -540,7 +552,7 @@ app.post('/compra', autenticar, (req, res) => {
         valorTotal = Number(valorTotal.toFixed(2));
         const compras = lerJson(ARQUIVO_COMPRAS, []);
         const idCompra = compras.reduce((maior, c) => Math.max(maior, Number(c.id) || 0), 0) + 1;
-        compras.push({
+        const compra = {
             id: idCompra,
             data: new Date().toISOString(),
             forma_pagamento,
@@ -551,13 +563,27 @@ app.post('/compra', autenticar, (req, res) => {
                 quantidade: i.quantidade,
                 valor_unitario: i.valor_unitario,
             })),
-        });
+        };
+        compras.push(compra);
         salvarJson(ARQUIVO_COMPRAS, compras);
+
+        // Espelha a compra no MySQL (tabelas compra e possui). Se o banco
+        // estiver indisponível, a compra continua salva no compras.json.
+        let salvaNoBanco = false;
+        try {
+            const { cliente } = clienteDaRequisicao(req);
+            const idClienteBanco = await garantirCliente(cliente);
+            await salvarCompra({ ...compra, id_cliente: idClienteBanco });
+            salvaNoBanco = true;
+        } catch (errorBanco) {
+            console.error("Compra salva em compras.json, mas não no MySQL:", errorBanco.message);
+        }
 
         return res.status(201).json({
             msg: "Compra realizada com sucesso",
             id_compra: idCompra,
             valor_total: valorTotal,
+            banco: salvaNoBanco,
         });
     } catch (error) {
         console.error("Erro ao finalizar compra:", error);

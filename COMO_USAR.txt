@@ -1,0 +1,117 @@
+COMO USAR O PROJETO CASABEMOL
+=============================
+
+REQUISITOS
+----------
+- Node.js 18 ou superior (https://nodejs.org)
+- MySQL 8 (opcional; o site funciona com os arquivos JSON)
+- As dependências são instaladas com "npm install"
+
+IMPORTANTE (Windows/PowerShell)
+-------------------------------
+No PowerShell, use "npm.cmd" em vez de "npm". O PowerShell bloqueia o
+arquivo npm.ps1 por padrão e mostra o erro "execução de scripts foi
+desabilitada". Exemplos: npm.cmd install, npm.cmd start.
+
+Se quiser usar apenas "npm", libere uma vez com:
+
+    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+Depois feche e abra o PowerShell novamente.
+
+
+1. INSTALAR AS DEPENDÊNCIAS
+---------------------------
+Abra o PowerShell nesta pasta e rode:
+
+    npm.cmd install
+
+Se aparecer erro no bcrypt, instale o Node.js LTS novamente e rode o
+comando de novo (o bcrypt usa binário pronto para as versões LTS).
+
+
+2. CONFIGURAÇÃO (.env)
+----------------------
+O arquivo .env já foi criado com os valores de env.txt.
+Confira principalmente:
+
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_USER=root
+    DB_PASSWORD=22102009
+    DB_DATABASE=teste3dsc
+
+Se a senha do seu MySQL for outra, altere DB_PASSWORD.
+A API também usa JWT_SECRET; não é preciso mudar para testar localmente.
+
+
+3. RODAR O SITE
+---------------
+    npm.cmd start
+
+Depois abra: http://localhost:3000
+
+O site lê o catálogo de front/produtos.json e grava:
+- clientes em bd.json
+- compras em compras.json
+
+Esses arquivos são o "banco" usado pelo site atualmente.
+
+
+4. VERIFICAR CATÁLOGO E IMAGENS
+-------------------------------
+    npm.cmd run verificar
+
+O comando confere:
+- se os 68 produtos têm ID, nome, categoria, preço e caminho_img;
+- se cada caminho_img existe em img/instrumentos;
+- se não há imagem sobrando sem produto;
+- se produtos.json (raiz) é igual a front/produtos.json.
+
+
+5. BANCO DE DADOS MYSQL (OPCIONAL)
+----------------------------------
+O migration.js cria o banco, as tabelas e sincroniza os 68 instrumentos
+com o caminho correto das imagens (instrumentos/...). Ele também corrige
+bancos antigos que ainda apontavam para "games/...":
+
+    npm.cmd run migrate
+
+Para recriar o estoque a partir de front/produtos.json:
+
+    npm.cmd run migrate -- --reset-estoque
+
+Para criar apenas a tabela de clientes:
+
+    npm.cmd run migrate:clientes
+
+Alternativa: importe o arquivo banco_instrumentos.sql no MySQL Workbench.
+Ele contém as tabelas e os 68 produtos já com as imagens corretas.
+Para os usuários de teste, importe também cliente.sql.
+
+O migration NÃO apaga compras: ele atualiza os produtos existentes pelo ID
+e mantém o estoque atual (a menos que você use --reset-estoque).
+
+Se aparecer "Access denied", o DB_USER/DB_PASSWORD do .env estão errados.
+Se aparecer "ECONNREFUSED", o MySQL não está rodando.
+
+
+6. IMAGENS
+----------
+As 68 imagens dos instrumentos ficam em:
+
+    img\instrumentos\
+
+O site serve essa pasta em http://localhost:3000/img/instrumentos/...
+Não renomeie nem apague os arquivos sem atualizar front/produtos.json.
+
+
+7. LOGINS JÁ CADASTRADOS (bd.json)
+----------------------------------
+    E-mail: tui1020kg1@gmail.com
+    Senha:  22102009
+
+    E-mail: gabriel@gmail.com
+    Senha:  22102009
+
+Para criar outra conta, use a tela "Cadastro" do site.

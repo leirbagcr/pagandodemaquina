@@ -1,1 +1,60 @@
-﻿[]
+[
+  {
+    "id": 1,
+    "data": "2026-11-24T03:01:59.962Z",
+    "forma_pagamento": "Pix",
+    "valor_total": 1790,
+    "id_cliente": 1,
+    "itens": [
+      {
+        "id_produto": 1,
+        "quantidade": 1,
+        "valor_unitario": 250
+      },
+      {
+        "id_produto": 2,
+        "quantidade": 1,
+        "valor_unitario": 415
+      },
+      {
+        "id_produto": 3,
+        "quantidade": 1,
+        "valor_unitario": 310
+      },
+      {
+        "id_produto": 4,
+        "quantidade": 1,
+        "valor_unitario": 375
+      },
+      {
+        "id_produto": 5,
+        "quantidade": 1,
+        "valor_unitario": 440
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "data": "2026-11-24T03:13:08.335Z",
+    "forma_pagamento": "Pix",
+    "valor_total": 975,
+    "id_cliente": 2,
+    "itens": [
+      {
+        "id_produto": 1,
+        "quantidade": 1,
+        "valor_unitario": 250
+      },
+      {
+        "id_produto": 2,
+        "quantidade": 1,
+        "valor_unitario": 415
+      },
+      {
+        "id_produto": 3,
+        "quantidade": 1,
+        "valor_unitario": 310
+      }
+    ]
+  }
+]

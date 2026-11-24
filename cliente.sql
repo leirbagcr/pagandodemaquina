@@ -1,5 +1,7 @@
 -- Banco utilizado pelo projeto
-USE daniele3DSC;
+CREATE DATABASE IF NOT EXISTS teste3dsc
+    CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE teste3dsc;
 
 -- Recria a tabela de clientes com os usuários padrão do sistema.
 -- As senhas já estão criptografadas com bcrypt.

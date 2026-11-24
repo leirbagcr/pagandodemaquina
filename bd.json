@@ -26,5 +26,37 @@
     "cidade": "Curitiba",
     "estado": "PR",
     "data_nasc": "2009-08-08"
+  },
+  {
+    "nome": "elthurzito",
+    "cpf": "113.011.609-39",
+    "email": "tui1020kg@gmail.com",
+    "celular": "(43)99966-4654",
+    "senha": "$2b$10$ju.3MBNlTpgdwmC.pRR86OdSyeuPGPPBnjspeSvXbvn6PgNvD8tVS",
+    "cep": "84071-452",
+    "rua": "Rua João Hermann de Geus",
+    "numero_casa": "776",
+    "bairro": "Boa Vista",
+    "cidade": "Ponta Grossa",
+    "estado": "PR",
+    "data_nasc": "2009-10-22",
+    "id": 1,
+    "gmail": "tui1020kg@gmail.com"
+  },
+  {
+    "nome": "elthurzito",
+    "cpf": "111.222.444-55",
+    "email": "elthurzito@gmail.com",
+    "celular": "(43)99966-6655",
+    "senha": "$2b$10$IzRL1lqJJu1KsyBJlZ1s5OWnk8LlgW7n8vN6u9BHS2uzzXqQU2vly",
+    "cep": "84071-452",
+    "rua": "Rua João Hermann de Geus",
+    "numero_casa": "777",
+    "bairro": "Boa Vista",
+    "cidade": "Ponta Grossa",
+    "estado": "PR",
+    "data_nasc": "2009-10-22",
+    "id": 2,
+    "gmail": "elthurzito@gmail.com"
   }
 ]
